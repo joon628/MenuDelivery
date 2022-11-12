@@ -1,5 +1,5 @@
 import pytest
-import menu_delivery
+from menu_delivery import menu_delivery
 from PyInquirer import Validator, ValidationError
 
 

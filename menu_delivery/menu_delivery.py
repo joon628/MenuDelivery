@@ -7,7 +7,7 @@ from PyInquirer import style_from_dict, Token, prompt, Separator
 from PyInquirer import Validator, ValidationError
 from pyfiglet import Figlet
 
-from p2pnode import P2PNode
+from menu_delivery.p2pnode import P2PNode
 import regex
 
 
@@ -76,6 +76,13 @@ class CLI:
             menu = json.load(json_file)
         return menu
 
+    def add_choices(self, questions, category):
+        choices = questions[0]["choices"]
+        choices.append((Separator(f"= The {category} =")))
+        for i in self.menu[f"{category}"]:
+            choices.append(i)
+        return questions
+
     def window_type_selection_cli(self):
         """Creates the list of questions for selecting
         which node to initialize
@@ -131,28 +138,24 @@ class CLI:
             answers: result of the menu selection in document format
         """
         order_number = str(datetime.now())
+        print(self.menu["noodles"])
         questions = [
             {
                 "type": "checkbox",
                 "message": "Select toppings",
                 "name": "toppings",
-                "choices": [
-                    Separator("= The Noodles ="),
-                    self.menu["noodles"],
-                    Separator("= The Soup ="),
-                    self.menu["soup"],
-                    Separator("= The Toppings ="),
-                    self.menu["toppings"],
-                    Separator("= The Garlic ="),
-                    self.menu["garlic"],
-                    Separator("= The Spicyness ="),
-                    self.menu["spice"],
-                ],
+                "choices": [],
                 "validate": lambda answer: "You must choose at least one topping."
                 if len(answer) == 0
                 else True,
             }
         ]
+
+        self.add_choices(questions, "noodles")
+        self.add_choices(questions, "soup")
+        self.add_choices(questions, "toppings")
+        self.add_choices(questions, "garlic")
+        self.add_choices(questions, "spice")
 
         answers = prompt(questions, style=self.style)
         answers["order_number"] = order_number
@@ -163,9 +166,9 @@ class CLI:
         send to the server.
         """
         node_type = self.window_type_selection_cli()
+        init = initialization(node_type)
         if node_type["Node_Type"] == "Client":
             outbound_connection_info = self.initialize_node_client_cli()
-            init = initialization(node_type)
             init.node = init.initialize_node()
             init.node.connect_with_node(
                 outbound_connection_info["outbound_ip"],
@@ -178,7 +181,7 @@ class CLI:
             except KeyboardInterrupt:
                 sys.exit(1)
         else:
-            init.node = init.initialize_node(node_type)
+            init.node = init.initialize_node()
 
 
 class IPValidator(Validator):
