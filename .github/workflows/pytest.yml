@@ -24,7 +24,7 @@ jobs:
           fetch-depth: 0
           
       - name: Switch to Current Branch
-        run: git checkout ${{ env.BRANCH }}
+        run: git checkout ${{ env.BRANCH }}git 
               
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v1
@@ -34,7 +34,6 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          cd key_generator/source
           pip install -r requirements-dev.txt
           pip install -e .
       - name: Run unit tests
