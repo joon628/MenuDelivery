@@ -7,8 +7,9 @@ from PyInquirer import style_from_dict, Token, prompt, Separator
 from PyInquirer import Validator, ValidationError
 from pyfiglet import Figlet
 
-from menu_delivery.p2pnode import P2PNode
+from p2pnode import P2PNode
 import regex
+
 
 
 class initialization(P2PNode):
@@ -40,7 +41,7 @@ class initialization(P2PNode):
         return server
 
 
-class CLI:
+class lCLI:
     """Creates multiple Command Line Interface, starting from connecting to
     nodes and selecting menus.
     """
