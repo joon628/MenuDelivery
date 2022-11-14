@@ -1,3 +1,0 @@
-#!/bin/sh
-black .
-python lint.py -p menu_delivery
