@@ -32,8 +32,8 @@ class P2PNode(Node):
         """Determines how the messages sent by the nodes will be formatted
 
         Args:
-            node (Node): _description_
-            data (string): _description_
+            node (Node): the node that is related to the sent message
+            data (string): data that is being sent between the nodes in string format
         """
         self.msg = (self.id, node.id, data)
 
@@ -130,7 +130,3 @@ class P2PNode(Node):
             self.sock.settimeout(None)
             self.sock.close()
             print("Node stopped")
-
-
-# githooks
-# git actions

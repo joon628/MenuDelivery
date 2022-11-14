@@ -7,15 +7,16 @@ from PyInquirer import style_from_dict, Token, prompt, Separator
 from PyInquirer import Validator, ValidationError
 from pyfiglet import Figlet
 
-from p2pnode import P2PNode
+from ..menu_delivery import p2pnode
 import regex
 
 
-class initialization(P2PNode):
+class Initialization(p2pnode.P2PNode):
     """Initializes the Program and creates either a server or client instance.
     For servers, it also creates the CLI interface for updates from the client."""
 
     def __init__(self, node_type):
+        self.node = ""
         self.node_type = node_type
 
     def initialize_node(self):
@@ -24,14 +25,14 @@ class initialization(P2PNode):
             for updates from the client.
 
         Returns:
-            node: client or server node, which is a Node Object from p2pnode
+            node (Node): client or server node, which is a Node Object from p2pnode
         """
         if self.node_type["Node_Type"] == "Client":
-            client = P2PNode("127.0.0.1", 10001, 1)
+            client = p2pnode.P2PNode("127.0.0.1", 10001, 1)
             print("Client node initialized")
             return client
 
-        server = P2PNode("127.0.0.1", 10002, 2)
+        server = p2pnode.P2PNode("127.0.0.1", 10002, 2)
         server.debug = True
         server.server_table.add_column("Order Number")
         server.server_table.add_column("Order Description")
@@ -60,8 +61,8 @@ class CLI:
                 Token.Question: "",
             }
         )
-        f = Figlet(font="slant")
-        print(f.renderText("Menu Delivery v0.1"))
+        figlet = Figlet(font="slant")
+        print(figlet.renderText("Menu Delivery v0.1"))
         self.json = "./menu.json"
         self.menu = self.import_menu_from_json()
 
@@ -70,13 +71,23 @@ class CLI:
         adds it as a dictionary for the CLI to implement.
 
         Returns:
-            menu: dictionary of menus converted from the json file.
+            menu (dict): dictionary of menus converted from the json file.
         """
         with open(self.json) as json_file:
             menu = json.load(json_file)
         return menu
 
     def add_choices(self, questions, category):
+        """Adds the values of the imported menu from import_menu_from_json into the CLI
+
+        Args:
+            questions (dictionary): the dictionary of menus that is used to display the contents to
+            the users 
+            category (string): type of menu that is grabbed from the menu, such as "noodles"
+        Returns:
+            questions (dictionary): the updated questions dictionary
+        
+        """
         choices = questions[0]["choices"]
         choices.append((Separator(f"= The {category} =")))
         for i in self.menu[f"{category}"]:
@@ -88,7 +99,7 @@ class CLI:
         which node to initialize
 
         Returns:
-            answers: result of the selection in document format
+            answers (document): result of the selection in document format
         """
         questions = [
             {
@@ -111,7 +122,7 @@ class CLI:
         connect to the server.
 
         Returns:
-            answers: result of the selection in document format
+            answers (document): result of the selection in document format
         """
         questions = [
             {
@@ -135,7 +146,7 @@ class CLI:
         select their menu from the menu imported in the initialization.
 
         Returns:
-            answers: result of the menu selection in document format
+            answers (document): result of the menu selection in document format
         """
         order_number = str(datetime.now())
         print(self.menu["noodles"])
@@ -166,7 +177,7 @@ class CLI:
         send to the server.
         """
         node_type = self.window_type_selection_cli()
-        init = initialization(node_type)
+        init = Initialization(node_type)
         if node_type["Node_Type"] == "Client":
             outbound_connection_info = self.initialize_node_client_cli()
             init.node = init.initialize_node()
@@ -188,14 +199,14 @@ class IPValidator(Validator):
     """Validates the integrity of user inputted IP address
 
     Args:
-        Validator: extends Validation from PyInquirer
+        Validator (Validator): extends Validation from PyInquirer
     """
 
     def validate(self, document):
         """Validates the integrity of user inputted IP address
 
         Args:
-            document: format of data in PyInquirer with the Ip address
+            document (document): format of data in PyInquirer with the Ip address
 
         Raises:
             ValidationError: If the IP is not correctly formatted, throw an error
@@ -203,11 +214,11 @@ class IPValidator(Validator):
         Returns:
             Bool: Check if validated
         """
-        ip = regex.match(
+        IP = regex.match(
             "^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$",
             document.text,
         )
-        if not ip:
+        if not IP:
             raise ValidationError(
                 message="Please enter a valid IPv4 number",
                 cursor_position=len(document.text),
@@ -219,14 +230,14 @@ class PortValidator(Validator):
     """Validates the integrity of user inputted Port address
 
     Args:
-        Validator: extends Validation from PyInquirer
+        Validator (Validator): extends Validation from PyInquirer
     """
 
     def validate(self, document):
         """Validates the integrity of user inputted Port address
 
         Args:
-            document: format of data in PyInquirer with the Port address
+            document (document): format of data in PyInquirer with the Port address
 
         Raises:
             ValidationError: If the Port is not correctly formatted, throw an error
