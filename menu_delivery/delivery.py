@@ -7,7 +7,7 @@ from PyInquirer import style_from_dict, Token, prompt, Separator
 from PyInquirer import Validator, ValidationError
 from pyfiglet import Figlet
 
-import p2pnode
+from menu_delivery import p2pnode
 import regex
 
 
