@@ -10,6 +10,7 @@ from pyfiglet import Figlet
 from p2pnode import P2PNode
 import regex
 
+
 class initialization(P2PNode):
     """Initializes the Program and creates either a server or client instance.
     For servers, it also creates the CLI interface for updates from the client."""
@@ -39,7 +40,7 @@ class initialization(P2PNode):
         return server
 
 
-class lCLI:
+class CLI:
     """Creates multiple Command Line Interface, starting from connecting to
     nodes and selecting menus.
     """
