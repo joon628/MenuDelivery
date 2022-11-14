@@ -7,11 +7,11 @@ from PyInquirer import style_from_dict, Token, prompt, Separator
 from PyInquirer import Validator, ValidationError
 from pyfiglet import Figlet
 
-from ..menu_delivery import p2pnode
+from p2pnode import P2PNode
 import regex
 
 
-class Initialization(p2pnode.P2PNode):
+class Initialization(P2PNode):
     """Initializes the Program and creates either a server or client instance.
     For servers, it also creates the CLI interface for updates from the client."""
 
@@ -28,11 +28,11 @@ class Initialization(p2pnode.P2PNode):
             node (Node): client or server node, which is a Node Object from p2pnode
         """
         if self.node_type["Node_Type"] == "Client":
-            client = p2pnode.P2PNode("127.0.0.1", 10001, 1)
+            client = P2PNode("127.0.0.1", 10001, 1)
             print("Client node initialized")
             return client
 
-        server = p2pnode.P2PNode("127.0.0.1", 10002, 2)
+        server = P2PNode("127.0.0.1", 10002, 2)
         server.debug = True
         server.server_table.add_column("Order Number")
         server.server_table.add_column("Order Description")
