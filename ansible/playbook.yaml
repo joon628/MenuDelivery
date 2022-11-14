@@ -2,39 +2,39 @@
 - name: deployment 
   hosts: remoteservers
   gather_facts: false
-
-  vars:
-    app_name: MenuDelivery
-    repo_url: https://github.com/joon628/menudelivery.git
-    repo_remote: origin
-    repo_version: main
-    app_dir: /LSD
-    virtualenv_root: /LSD/MenuDelivery
+  become: yes
 
   tasks:
   - name: Ping hosts
     ansible.builtin.ping:
 
-  - name: git pull project
-    git: repo= {{repo_url}} dest={{app_dir}}/{{app_name}} version=main
+  - name: Install git
+    apt:
+      name: git
+      state: present
+      update_cache: yes
 
-    notify:
-     - restart app
+  - name: Creates directory
+    file:
+      path: /src/ansible
+      state: directory
 
-  - name: Install python to remote host
-    raw: 'cat < /LSD/MenuDelivery/ansible/script.sh'
-    args: 
-      executable: /bin/bash
+  - name: Example clone of a single branch
+    ansible.builtin.git:
+      repo: https://github.com/joon628/menudelivery.git
+      dest: /src/ansible
+      single_branch: yes
+      version: production
 
   - name: install things
     pip: name=virtualenv
 
   - name: create virtualenv
-    command: virtualenv /LSD/MenuDelivery/venv
+    command: virtualenv /src/ansible/venv
   
   - name: activate virtualenv
-    command: /bin/bash /LSD/MenuDelivery/venv/bin/activate
+    command: /bin/bash /src/ansible/venv/bin/activate
 
-  - pip: requirments=/LSD/MenuDelivery/requirements.txt virtualenv=/LSD/MenuDelivery/venv
+  - pip: requirments=/src/ansible/requirements.txt virtualenv=/src/ansible/venv
   
   

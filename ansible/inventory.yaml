@@ -4,3 +4,6 @@ remoteservers:
       ansible_host: 192.168.1.1
     client:
       ansible_host: 192.168.1.2
+
+  vars:
+    ansible_host: ansible

@@ -29,9 +29,29 @@ My program's purpose is to be a menu messaging kiosk between the kitchen and the
 
 ## Deployment 
 
-If setting up the program in your local devices and this program is set up on the control, you can use ansible to deploy and manage the code. In the ansible forlder, there is a playbook that installs python, virtualenv, pip and requirements to the ssh enabled nodes (raspberri pis). Launch the playbook after editting the ip addresses and ssh requirements of the endpoints with 
+### Setting up the Raspberry Pis
 
-`ansible-playbook playbook.yml`
+There are a few requirements to set up your remote servers and automatically distribute this program. 
+
+First of all, your raspberry pis should be set up with the username "ansible" or whatever you see fit, but needs to be the same. 
+
+After updating the usernames of the nodes, update the inventory.yaml file's vars:ansible_hosts: variable to the username you chose. 
+
+Second, make sure openssh is installed and running on your servers. 
+
+Create a public ssh key on your control machine and pass the keys into the remote servers with scp or ssh-copy-id like so:
+
+`ssh-copy-id -i $HOME/.ssh/id_rsa.pub username@ip_address`
+
+After the two nodes are updated, you can update the 'inventory.yaml' file to the correct IP addresses for the nodes. 
+
+If setting up the program in your local devices and this program is set up on the control, you can use ansible to deploy and manage the code. In the ansible folder, there is a playbook that installs the requirements to the ssh enabled nodes (raspberri pis). Launch the playbook after editting the ip addresses and ssh requirements of the endpoints with 
+
+`ansible-playbook -i inventory playbook.yaml`
+
+To distribute an update of the code, then use the update.yaml file that pulls the required files from the production branch. 
+
+`ansible-playbook -i inventory update.yaml`
 
 ## Contributions 
 
