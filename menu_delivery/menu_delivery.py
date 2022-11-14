@@ -11,12 +11,12 @@ from ..menu_delivery import p2pnode
 import regex
 
 
-class initialization(p2pnode.P2PNode):
+class Initialization(p2pnode.P2PNode):
     """Initializes the Program and creates either a server or client instance.
     For servers, it also creates the CLI interface for updates from the client."""
 
     def __init__(self, node_type):
-    
+        self.node = ""
         self.node_type = node_type
 
     def initialize_node(self):
@@ -61,8 +61,8 @@ class CLI:
                 Token.Question: "",
             }
         )
-        f = Figlet(font="slant")
-        print(f.renderText("Menu Delivery v0.1"))
+        figlet = Figlet(font="slant")
+        print(figlet.renderText("Menu Delivery v0.1"))
         self.json = "./menu.json"
         self.menu = self.import_menu_from_json()
 
@@ -78,6 +78,16 @@ class CLI:
         return menu
 
     def add_choices(self, questions, category):
+        """Adds the values of the imported menu from import_menu_from_json into the CLI
+
+        Args:
+            questions (dictionary): the dictionary of menus that is used to display the contents to
+            the users 
+            category (string): type of menu that is grabbed from the menu, such as "noodles"
+        Returns:
+            questions (dictionary): the updated questions dictionary
+        
+        """
         choices = questions[0]["choices"]
         choices.append((Separator(f"= The {category} =")))
         for i in self.menu[f"{category}"]:
@@ -167,7 +177,7 @@ class CLI:
         send to the server.
         """
         node_type = self.window_type_selection_cli()
-        init = initialization(node_type)
+        init = Initialization(node_type)
         if node_type["Node_Type"] == "Client":
             outbound_connection_info = self.initialize_node_client_cli()
             init.node = init.initialize_node()
@@ -204,11 +214,11 @@ class IPValidator(Validator):
         Returns:
             Bool: Check if validated
         """
-        ip = regex.match(
+        IP = regex.match(
             "^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$",
             document.text,
         )
-        if not ip:
+        if not IP:
             raise ValidationError(
                 message="Please enter a valid IPv4 number",
                 cursor_position=len(document.text),

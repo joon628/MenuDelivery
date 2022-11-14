@@ -130,4 +130,3 @@ class P2PNode(Node):
             self.sock.settimeout(None)
             self.sock.close()
             print("Node stopped")
-
