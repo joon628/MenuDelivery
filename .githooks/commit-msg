@@ -1,0 +1,21 @@
+#!/bin/sh
+# regex to validate in commit msg
+commit_regex='^[A-Z][^[:space:]]\.{0,49}((\r\n|\r|\n)(\r\n|\r|\n)\.{1,72}((\r\n|\r|\n){1,2}\.{1,72}(\r\n|\r|\n){0})*)*'
+
+error_msg="Aborting commit. Your commit message is missing one or many of the following: 
+- The commit message must be non-empty.
+- The start of the commit message must start with a capital letter.
+- The first line of the commit message must be at most 50 characters long.
+- All subsequent lines of the commit messages must be at most 72 characters
+  long.
+- There must be a blank line after the first line, if there is any text besides
+  the first line."
+
+INPUT_FILE=$1
+START_LINE=`head -n1 $INPUT_FILE`
+if [[ "$START_LINE" =~ $commit_regex ]]; then
+    echo "Valid Commit Msg"
+else
+    echo "$error_msg" >&2
+    exit 1
+fi

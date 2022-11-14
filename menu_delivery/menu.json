@@ -1,0 +1,69 @@
+{
+    "noodles": [
+        {
+            "name":"Shin"
+        },
+        {
+            "name":"Jin"
+        },
+        {
+            "name":"Noguri"
+        }
+    ],
+    "soup":[
+        {
+            "name":"Chicken"
+        },
+        {
+            "name":"Beef"
+        },
+        {
+            "name":"Pork"
+        }
+    ],
+    "toppings":[
+        {
+            "name":"Green Onions"
+        },
+        {
+            "name":"Crab"
+        },
+        {
+            "name":"Shrimp"
+        },
+        {
+            "name":"Sirloin"
+        },
+        {
+            "name":"Bean Sprouts"
+        }
+    ],
+    "garlic":[
+        {
+            "name":"Little"
+        }, 
+        {
+            "name":"Normal"
+        },
+        {
+            "name":"Extra"
+        }
+    ],
+    "spice":[
+        {
+            "name":"Level 1"
+        },
+        {
+            "name":"Level 2"
+        },
+        {
+            "name":"Level 3"
+        },
+        {
+            "name":"Level 4"
+        },
+        {
+            "name":"Level 5"
+        }
+    ]
+}
