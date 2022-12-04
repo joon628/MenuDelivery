@@ -1,3 +1,3 @@
-#!/bin/sh
+#!/bin/bash
 black .
 python lint.py -p menu_delivery

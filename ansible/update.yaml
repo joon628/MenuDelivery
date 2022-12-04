@@ -13,6 +13,6 @@
       repo: https://github.com/joon628/menudelivery.git
       dest: /src/ansible/
       update: yes
-      version: main
+      version: production
 
   
