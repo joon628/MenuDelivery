@@ -95,3 +95,43 @@ def test_port_smaller_than():
     PortValidator = delivery.PortValidator()
     with pytest.raises(ValidationError):
         PortValidator.validate(document("0"))
+
+def test_add_choices():
+    """Tests the function add_choices"""
+    questions = [
+            {
+                "type": "checkbox",
+                "message": "Select toppings",
+                "name": "toppings",
+                "choices": [],
+                "validate": lambda answer: "You must choose at least one topping."
+                if len(answer) == 0
+                else True,
+            }
+        ] 
+    category = "noodles"
+    menu = {"noodles": [
+        {
+            "name":"Shin"
+        },
+        {
+            "name":"Jin"
+        },
+        {
+            "name":"Noguri"
+        }
+    ]
+    }
+    delivery.CLI.menu = menu
+    
+    #get values from menu
+    menu_items =[]
+    for item in menu[category]:
+        menu_items.append(item["name"])
+    
+    #get values from add_choices
+    add_choice_items = []
+    for item in delivery.CLI.add_choices(delivery.CLI, questions, category)[0]["choices"][1:]:
+        add_choice_items.append(item["name"])
+        
+    assert add_choice_items == menu_items

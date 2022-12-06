@@ -19,7 +19,7 @@
       path: /src/ansible
       state: directory
 
-  - name: Example clone of a single branch
+  - name: Clone Branch 
     ansible.builtin.git:
       repo: https://github.com/joon628/menudelivery.git
       dest: /src/ansible
