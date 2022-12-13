@@ -1,8 +1,8 @@
+import time
+import socket
 from p2pnetwork.node import Node
 from rich.live import Live
 from rich.table import Table
-import time
-import socket
 
 
 class P2PNode(Node):
@@ -38,9 +38,10 @@ class P2PNode(Node):
         self.msg = (self.id, node.id, data)
 
     def run(self):
-        """The main loop of the thread that deals with connections from other nodes on the network. When a
-        node is connected it will exchange the node id's. First we receive the id of the connected node
-        and secondly we will send our node id to the connected node. When connected the method
+        """The main loop of the thread that deals with connections from other
+        nodes on the network. When a node is connected it will exchange the
+        node id's. First we receive the id of the connected node and secondly
+        we will send our node id to the connected node. When connected the method
         inbound_node_connected is invoked."""
 
         with Live(self.server_table, refresh_per_second=4):
@@ -50,7 +51,7 @@ class P2PNode(Node):
             ):  # Check whether the thread needs to be closed
                 try:
                     time.sleep(0.4)
-                    if self.msg != None:
+                    if self.msg is not None:
                         order_number = self.msg[2]["order_number"]
                         if prior_order != order_number:
                             order_description = {
@@ -110,9 +111,9 @@ class P2PNode(Node):
                 except socket.timeout:
                     self.debug_print("Node: Connection timeout!")
 
-                except Exception as e:
-                    self.inbound_node_connection_error(e)
-                    raise e
+                except Exception as exception:
+                    self.inbound_node_connection_error(exception)
+                    raise exception
 
                 self.reconnect_nodes()
 

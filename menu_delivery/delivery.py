@@ -214,11 +214,11 @@ class IPValidator(Validator):
         Returns:
             Bool: Check if validated
         """
-        IP = regex.match(
+        ip = regex.match(
             "^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$",
             document.text,
         )
-        if not IP:
+        if not ip:
             raise ValidationError(
                 message="Please enter a valid IPv4 number",
                 cursor_position=len(document.text),
