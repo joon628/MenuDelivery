@@ -48,7 +48,8 @@ class CLI:
 
     def __init__(self):
         """Styles the Command Line Interface, and adds the Title of the CLI
-        Imports the menu options from a json file.
+        Imports the menu options from a json file. The command line interface
+        fonts and colors, icons are all defined here. 
         """
         self.style = style_from_dict(
             {
@@ -68,7 +69,8 @@ class CLI:
 
     def import_menu_from_json(self):
         """Imports the menu from the user editable json file and
-        adds it as a dictionary for the CLI to implement.
+        adds it as a dictionary for the CLI to implement. The menu 
+        is in the format of type:[{ingridient}, {ingridient}...]
 
         Returns:
             menu (dict): dictionary of menus converted from the json file.
@@ -78,7 +80,12 @@ class CLI:
         return menu
 
     def add_choices(self, questions, category):
-        """Adds the values of the imported menu from import_menu_from_json into the CLI
+        """Adds the values of the imported menu from import_menu_from_json into the CLI. 
+            This function is implemented because the 'questions' variable is a list of 
+            dictionaries, and creating partitions between the menu choices are not possible
+            unless we add the menu types such as 'noodles' and 'garlic' individually.
+            In summary, this function takes a type of menu from the json and addes it to the 
+            'choices' array to represent the menu in pyinquirer.
 
         Args:
             questions (dictionary): the dictionary of menus that is used to display the contents to
@@ -95,8 +102,9 @@ class CLI:
         return questions
 
     def window_type_selection_cli(self):
-        """Creates the list of questions for selecting
-        which node to initialize
+        """When opening the application for the first time, 
+        this function creates the list of questions for selecting
+        which node to initialize. 
 
         Returns:
             answers (document): result of the selection in document format
@@ -143,7 +151,8 @@ class CLI:
 
     def client_menu_selection_cli(self):
         """Creates a list of questions for the user to
-        select their menu from the menu imported in the initialization.
+        select their menu from the menu imported in the initialization. This is
+        represented in a list of checkmarks that the user can toggle.
 
         Returns:
             answers (document): result of the menu selection in document format
